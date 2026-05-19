@@ -1,6 +1,5 @@
 // ══════════════════════════════════════════════════════
 //  WEBGIS HOROR — script.js  (UPGRADED)
-//  Mapbox token: pk.eyJ1IjoiZGhybjIxIiwiYSI6ImNtbm9meDNxcTI0Y2sycXEyaG43dnJqajIifQ.p1s6U3VJQR6jJu0kSN2WLQ
 // ══════════════════════════════════════════════════════
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiZGhybjIxIiwiYSI6ImNtbm9meDNxcTI0Y2sycXEyaG43dnJqajIifQ.p1s6U3VJQR6jJu0kSN2WLQ';
