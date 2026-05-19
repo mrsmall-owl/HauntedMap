@@ -154,17 +154,41 @@ let bgMusic=null, audioCtx=null, gainNode=null, oscNodes=[], usingFile=false;
 (function makeGhosts(){
   const c = document.getElementById('ghostContainer');
   if(!c) return;
-  const ghosts = ['👻','👻','👻','🕷','🕸','💀','🦇','🦇','☠','🩸','👁'];
+
+  const ghosts = ['🕷','🦇','🦇','🕸','🦇','☠','🦇','👁'];
+
+  const positions = [
+    {x:10, y:20},
+    {x:25, y:70},
+    {x:40, y:15},
+    {x:55, y:80},
+    {x:70, y:25},
+    {x:85, y:60},
+    {x:15, y:50},
+    {x:90, y:10},
+  ];
+
   ghosts.forEach((g,i)=>{
     const el = document.createElement('div');
     el.className = 'ghost';
-    const x = 3 + Math.random()*92;
-    const y = 5 + Math.random()*85;
+
+    const x = positions[i].x;
+    const y = positions[i].y;
+
     const dur   = 4 + Math.random()*10;
     const delay = Math.random()*-10;
     const tx = (Math.random()-0.5)*80;
     const ty = -25 - Math.random()*50;
-    el.style.cssText = `left:${x}%;top:${y}%;--gd:${dur}s;--gdelay:${delay}s;--gx:${tx}px;--gy:${ty}px;font-size:${1+Math.random()*3}rem`;
+
+    el.style.cssText =
+      `left:${x}%;
+       top:${y}%;
+       --gd:${dur}s;
+       --gdelay:${delay}s;
+       --gx:${tx}px;
+       --gy:${ty}px;
+       font-size:${1+Math.random()*3}rem`;
+
     el.textContent = g;
     c.appendChild(el);
   });
@@ -176,7 +200,7 @@ let bgMusic=null, audioCtx=null, gainNode=null, oscNodes=[], usingFile=false;
   for(let i=0;i<18;i++){
     const el = document.createElement('div');
     el.className = 'skull-p';
-    el.textContent = ['💀','🩸','👁','🕯','☠','👻'][Math.floor(Math.random()*6)];
+    el.textContent = ['🩸','👁','🩸','☠'][Math.floor(Math.random()*6)];
     const dur   = 7 + Math.random()*14;
     const delay = Math.random()*18;
     el.style.cssText = `left:${Math.random()*100}%;bottom:${-10+Math.random()*10}%;--sd:${dur}s;--sdelay:${delay}s;font-size:${0.6+Math.random()*1.4}rem`;
@@ -189,12 +213,16 @@ let bgMusic=null, audioCtx=null, gainNode=null, oscNodes=[], usingFile=false;
   const c = document.getElementById('crawlText');
   if(!c) return;
   const texts = [
-    '⚠ TIDAK DISARANKAN MENGUNJUNGI SENDIRIAN MALAM HARI ⚠',
-    '👁 ADA YANG SELALU MEMPERHATIKAN DARI KEGELAPAN 👁',
-    '🩸 BEBERAPA YANG DATANG... TIDAK PERNAH KEMBALI 🩸',
-    '☠ ANDA TELAH MEMASUKI ZONA TANPA JAMINAN KESELAMATAN ☠',
+    '⚠ TIDAK DISARANKAN MENGUNJUNGI SITUS SENDIRIAN ⚠',
+    'SETIAP TEMPAT MENYIMPAN CERITA YANG TAK TERUCAP',
+    'ADA YANG SELALU MEMPERHATIKAN DARI KEGELAPAN 👁👁',
+    'BEBERAPA YANG DATANG... TIDAK PERNAH KEMBALI',
+    'TIDAK SEMUA YANG TERLIHAT DI PETA INI BENAR-BENAR KOSONG ☠',
+    'BEBERAPA JEJAK TIDAK PERNAH BENAR-BENAR MENGHILANG',
   ];
-  c.textContent = texts[Math.floor(Math.random()*texts.length)];
+
+  c.textContent = (texts.join('   ✦   ')+ '   ✦   ').repeat(5);
+  c.style.animationDuration = '300s';
 })();
 
 // ══════════════════════════════════════════════════════
