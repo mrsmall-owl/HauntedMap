@@ -234,63 +234,6 @@ let routeLayer=null, originMarkerL=null, destMarkerL=null;
   }
 })();
 
-(function makeGhosts(){
-  const c = document.getElementById('ghostContainer');
-  if(!c) return;
-
-  const ghosts = ['🕷','🦇','🦇','🕸','🦇','☠','🦇','👁'];
-
-  const positions = [
-    {x:10, y:20},
-    {x:25, y:70},
-    {x:40, y:15},
-    {x:55, y:80},
-    {x:70, y:25},
-    {x:85, y:60},
-    {x:15, y:50},
-    {x:90, y:10},
-  ];
-
-  ghosts.forEach((g,i)=>{
-    const el = document.createElement('div');
-    el.className = 'ghost';
-
-    const x = positions[i].x;
-    const y = positions[i].y;
-
-    const dur   = 4 + Math.random()*10;
-    const delay = Math.random()*-10;
-    const tx = (Math.random()-0.5)*80;
-    const ty = -25 - Math.random()*50;
-
-    el.style.cssText =
-      `left:${x}%;
-       top:${y}%;
-       --gd:${dur}s;
-       --gdelay:${delay}s;
-       --gx:${tx}px;
-       --gy:${ty}px;
-       font-size:${1+Math.random()*3}rem`;
-
-    el.textContent = g;
-    c.appendChild(el);
-  });
-})();
-
-(function makeSkulls(){
-  const c = document.getElementById('skullContainer');
-  if(!c) return;
-  for(let i=0;i<18;i++){
-    const el = document.createElement('div');
-    el.className = 'skull-p';
-    el.textContent = ['🩸','👁','🩸','☠'][Math.floor(Math.random()*6)];
-    const dur   = 7 + Math.random()*14;
-    const delay = Math.random()*18;
-    el.style.cssText = `left:${Math.random()*100}%;bottom:${-10+Math.random()*10}%;--sd:${dur}s;--sdelay:${delay}s;font-size:${0.6+Math.random()*1.4}rem`;
-    c.appendChild(el);
-  }
-})();
-
 // Crawling text at bottom
 (function makeCrawlText(){
   const c = document.getElementById('crawlText');
@@ -448,6 +391,22 @@ window.addEventListener('DOMContentLoaded', ()=>{
 //  ENTER MAP
 // ══════════════════════════════════════════════════════
 let mapInitialized = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const popup = document.getElementById('warningPopup');
+
+    if (popup) {
+        popup.style.display = 'flex';
+    }
+});
+
+function closeWarningPopup(){
+    const popup = document.getElementById('warningPopup');
+
+    if (popup) {
+        popup.style.display = 'none';
+    }
+}
 
 function enterMap(){
   const flash = document.getElementById('scareFlash');
