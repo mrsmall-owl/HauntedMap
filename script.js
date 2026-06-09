@@ -420,7 +420,12 @@ function enterMap(){
   // Paksa #map mengisi seluruh sisa ruang
   const mapEl = document.getElementById("map");
   if(mapEl){
-    mapEl.style.cssText = "position:absolute !important; top:56px !important; left:280px !important; right:0 !important; bottom:0 !important; width:auto !important; height:auto !important;";
+    mapEl.style.position = "absolute";
+    mapEl.style.top = "56px";
+    mapEl.style.right = "0";
+    mapEl.style.bottom = "0";
+    mapEl.style.width = "auto";
+    mapEl.style.height = "auto";
   }
 
   const overlay = document.getElementById("transOverlay");
@@ -584,9 +589,9 @@ function initMap(){
       L.DomEvent.disableClickPropagation(wrap);
 
       const layers = [
-        { id:'dark',     label:'🌑 Horor',    layer: layerDark },
-        { id:'satellite',label:'🛰 Satelit',  layer: layerSatellite },
-        { id:'street',   label:'🗺 Jalan',    layer: layerStreet },
+        { id:'dark',     label:'🌑 Dark',    layer: layerDark },
+        { id:'satellite',label:'🛰️ Satelit',  layer: layerSatellite },
+        { id:'street',   label:'⛙ Jalan',    layer: layerStreet },
       ];
 
       let active = 'dark';
@@ -607,7 +612,7 @@ function initMap(){
           btn.classList.add('active');
         });
       });
-
+      
       return wrap;
     }
   });
@@ -739,6 +744,8 @@ function renderMarkers(locs){
   locs.forEach(loc=>{
     const m=L.marker([loc.lat,loc.lon],{icon:markerIcon(loc)}).addTo(map);
 
+    markers.push(m);
+
     m.on('click', function(){
       const dist=(userLat&&userLon)
         ? calcDist(userLat,userLon,loc.lat,loc.lon)
@@ -758,7 +765,7 @@ function renderMarkers(locs){
         </div>`,{maxWidth:290}).openPopup();
     });
 
-    markers.push(m);
+
   });
 }
 
@@ -773,12 +780,21 @@ function calcDist(la1,lo1,la2,lo2){
 
 // ── FILTER ────────────────────────────────────────────
 function applyFilters(){
-  const lvls=[...document.querySelectorAll('.filter-checks input')]
-    .filter(i=>['rendah','sedang','tinggi','sangat-tinggi'].includes(i.value)&&i.checked).map(i=>i.value);
-  const cats=[...document.querySelectorAll('.filter-checks input')]
-    .filter(i=>['penampakan','suara','bau','kejadian','urban-legend'].includes(i.value)&&i.checked).map(i=>i.value);
-  renderMarkers(allLocations.filter(l=>lvls.includes(l.level)&&cats.includes(l.kategori)));
+
+    const lvls = [...document.querySelectorAll('.filter-checks input')]
+        .filter(i =>
+            ['rendah','sedang','tinggi','sangat-tinggi']
+            .includes(i.value) && i.checked
+        )
+        .map(i => i.value);
+
+    renderMarkers(
+        allLocations.filter(l =>
+            lvls.length===0 || lvls.includes(l.level)
+        )
+    );
 }
+
 function searchLocations(){
   const q=document.getElementById('searchInput').value.trim().toLowerCase();
   const box=document.getElementById('searchResults');
@@ -879,10 +895,25 @@ function submitNewLocation(e){
 
 // ── SIDEBAR ───────────────────────────────────────────
 function toggleSidebar(){
-  const sb=document.getElementById('sidebar');
-  sb.classList.toggle('collapsed');
-  document.getElementById('sidebarToggleIcon').textContent=sb.classList.contains('collapsed')?'▶':'◀';
-  setTimeout(()=>map&&map.invalidateSize(),320);
+    const sb = document.getElementById("sidebar");
+    const mapEl = document.getElementById("map");
+    const toggleBtn = document.querySelector(".sidebar-toggle");
+
+    sb.classList.toggle("collapsed");
+
+    if(sb.classList.contains("collapsed")){
+        mapEl.style.left = "0px";
+        toggleBtn.style.left = "0px";
+        document.getElementById("sidebarToggleIcon").innerHTML = "▶";
+    }else{
+        mapEl.style.left = "280px";
+        toggleBtn.style.left = "280px";
+        document.getElementById("sidebarToggleIcon").innerHTML = "◀";
+    }
+
+    setTimeout(()=>{
+        map.invalidateSize();
+    },300);
 }
 
 // ── SIDEBAR TABS ──────────────────────────────────────

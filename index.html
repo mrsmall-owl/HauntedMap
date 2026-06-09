@@ -903,6 +903,9 @@
       border: 1px solid rgba(255, 0, 0, .45);
       border-radius: 16px;
 
+      position: relative;
+      overflow: hidden; /* TAMBAHKAN */
+
       padding: 30px;
 
       color: #fff;
@@ -1021,6 +1024,7 @@
       right: 0;
       height: 2px;
       background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.7), rgba(200, 0, 0, 0.3), transparent);
+      display:none;
     }
 
     .warning-box::after {
@@ -1029,6 +1033,7 @@
       inset: 0;
       pointer-events: none;
       background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.03) 3px, rgba(0, 0, 0, 0.03) 4px);
+      display:none;
     }
 
     .warning-header {
@@ -1504,34 +1509,28 @@
       transition: transform 0.3s ease;
     }
 
-    .sidebar.collapsed {
-      transform: translateX(calc(-280px + 26px))
-    }
-
     .sidebar-toggle {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 26px;
-      height: 54px;
-      background: rgba(30, 0, 10, 0.97);
-      border: 1px solid rgba(180, 0, 0, 0.25);
-      border-left: none;
-      border-radius: 0 3px 3px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--dim);
-      font-size: 0.7rem;
-      z-index: 1;
-    }
+      position:absolute;
+      left:280px;
+      top:50%;
+      transform:translateY(-50%);
 
-    .sidebar-toggle:hover {
-      color: var(--red-b);
-      background: rgba(180, 0, 0, 0.15)
-    }
+      width:25px;
+      height:26px;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      background:rgba(80,0,0,.85);
+      border:1px solid rgba(180,0,0,.4);
+
+      z-index:1000;
+
+      cursor:pointer;
+
+      transition:left .3s ease;
+  }
 
     /* Tab nav */
     .sb-tabs {
@@ -3176,6 +3175,9 @@
       <div class="warning-box">
 
         <h2>⚠ PERINGATAN</h2>
+        <p>
+          Setiap tempat menyimpan cerita yang tak terucap!
+        </p>
 
         <p>
           WebGIS ini memuat cerita rakyat, mitos, urban legend,
@@ -3409,16 +3411,13 @@
       </nav>
 
       <div class="sidebar" id="sidebar">
-        <div class="sidebar-toggle" onclick="toggleSidebar()">
-          <span id="sidebarToggleIcon">◀</span>
-        </div>
-
+        
         <!-- Tab nav -->
         <div class="sb-tabs">
-          <button class="sb-tab active" id="stb-search" onclick="switchSbTab('search',this)">🔍<br>SEARCH</button>
-          <button class="sb-tab" id="stb-route" onclick="switchSbTab('route',this)">🧭<br>RUTE</button>
-          <button class="sb-tab" id="stb-filter" onclick="switchSbTab('filter',this)">⚙<br>FILTER</button>
-          <button class="sb-tab" id="stb-profile" onclick="switchSbTab('profile',this)">👁<br>PROFIL</button>
+          <button class="sb-tab active" id="stb-search" onclick="switchSbTab('search',this)">SEARCH</button>
+          <button class="sb-tab" id="stb-route" onclick="switchSbTab('route',this)">RUTE</button>
+          <button class="sb-tab" id="stb-filter" onclick="switchSbTab('filter',this)">FILTER</button>
+          <button class="sb-tab" id="stb-profile" onclick="switchSbTab('profile',this)">PROFIL</button>
         </div>
 
         <!-- SEARCH -->
@@ -3687,6 +3686,10 @@
         <div class="location-bar">
           <span id="locationStatus">📍 Mendeteksi lokasi kamu...</span>
         </div>
+      </div>
+
+      <div class="sidebar-toggle" onclick="toggleSidebar()">
+        <span id="sidebarToggleIcon">◀</span>
       </div>
 
       <!-- ══ MAP ══ -->
