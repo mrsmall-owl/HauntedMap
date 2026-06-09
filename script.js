@@ -409,35 +409,39 @@ function closeWarningPopup(){
 }
 
 function enterMap(){
-  const flash = document.getElementById('scareFlash');
-  flash.classList.add('active');
-  playScream();
 
-  setTimeout(()=>{
-    const overlay = document.getElementById('transOverlay');
-    overlay.classList.add('fade-in');
-  }, 300);
+  // Sembunyikan landing
+  document.getElementById("landing").style.display = "none";
 
-  setTimeout(()=>{
-    document.getElementById('landing').style.display='none';
-    document.getElementById('appScreen').style.display='block';
+  // Tampilkan appScreen dengan semua property yang diperlukan
+  const app = document.getElementById("appScreen");
+  app.style.cssText = "display:block !important; visibility:visible !important; opacity:1 !important; position:fixed !important; inset:0 !important; z-index:99999 !important; width:100vw !important; height:100vh !important;";
 
-    if(!mapInitialized){
+  // Paksa #map mengisi seluruh sisa ruang
+  const mapEl = document.getElementById("map");
+  if(mapEl){
+    mapEl.style.cssText = "position:absolute !important; top:56px !important; left:280px !important; right:0 !important; bottom:0 !important; width:auto !important; height:auto !important;";
+  }
+
+  const overlay = document.getElementById("transOverlay");
+  if(overlay){ overlay.style.display = "none"; }
+
+  const flash = document.getElementById("scareFlash");
+  if(flash){ flash.classList.remove("active"); flash.style.display = "none"; }
+
+  if(!mapInitialized){
+    // Tunggu 2 frame agar browser render dulu sebelum Leaflet init
+    requestAnimationFrame(() => requestAnimationFrame(() => {
       initMap();
-      mapInitialized=true;
-    }
-
-    // Fix map hitam — paksa Leaflet recalculate ukuran setelah elemen visible
-    setTimeout(()=>{ if(map) map.invalidateSize(); }, 250);
-    setTimeout(()=>{ if(map) map.invalidateSize(); }, 700);
-
-    const overlay = document.getElementById('transOverlay');
-    overlay.style.transition='opacity 0.8s ease';
-    overlay.style.opacity='0';
-    setTimeout(()=>{ overlay.classList.remove('fade-in'); overlay.style.opacity=''; }, 900);
-
-    flash.classList.remove('active');
-  }, 700);
+      mapInitialized = true;
+      // Paksa Leaflet recalculate ukuran berkali-kali
+      [100, 300, 600, 1200].forEach(t => setTimeout(() => {
+        if(map) map.invalidateSize(true);
+      }, t));
+    }));
+  } else {
+    [100, 500].forEach(t => setTimeout(() => { if(map) map.invalidateSize(true); }, t));
+  }
 }
 
 // ══════════════════════════════════════════════════════
